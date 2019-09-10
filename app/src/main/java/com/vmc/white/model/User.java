@@ -1,17 +1,22 @@
 package com.vmc.white.model;
 
-public class User {
+import java.io.Serializable;
+import java.util.Locale;
+
+public class User implements Serializable {
 
     private String name;
-    private String job;
+    private String category;
+    private String phone;
 
     public User(){
 
     }
 
-    public User(String name, String job) {
+    public User(String name, String category, String phone) {
         this.name = name;
-        this.job = job;
+        this.category = category;
+        this.phone = phone;
     }
 
     public String getName() {
@@ -22,12 +27,20 @@ public class User {
         this.name = name;
     }
 
-    public String getJob() {
-        return job;
+    public String getCategory() {
+        return category;
     }
 
-    public void setJob(String job) {
-        this.job = job;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
 
