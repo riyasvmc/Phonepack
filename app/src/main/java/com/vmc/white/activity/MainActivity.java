@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,7 +44,7 @@ import java.util.Map;
 
 public class MainActivity extends ActivityCustom implements SearchView.OnQueryTextListener {
     private static final String TAG = "Riyas.Vmc";
-    private static final String data_url = "https://raw.githubusercontent.com/riyasvmc/White/master/sand_box/data_white.csv?token=AB6CGCMTGUTF7PBFBHWKZPK5QDF64";
+    private static final String data_url = "https://raw.githubusercontent.com/riyasvmc/White/master/app/src/main/res/raw/data_white.csv?token=AB6CGCOBL7QSCCBSLREMNCK5QDHGG";
     private static final int MIN_SEARCH_CHAR = 3;
 
     // algolia
@@ -100,26 +101,26 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
         queue.add(stringRequest);
     }
 
-    private void uploadDataToAlgolia(String response) {
-        /*Map<String, Object> user1 = new HashMap<>();
-        user1.put("name", name);
-        user1.put("category", category);
-        user1.put("phone", phone);
+    private void uploadDataToAlgolia(final String response) {
+        // delete entire data from algolia
+        index.clearIndexAsync(new CompletionHandler() {
+            @Override
+            public void requestCompleted(@Nullable JSONObject jsonObject, @Nullable AlgoliaException e) {
+                Log.d(TAG, "requestCompleted Called");
+                String[] lines = response.split(System.getProperty("line.separator"));
+                for (String line : lines){
+                    String[] values = line.split(",");
+                    Map<String, Object> user1 = new HashMap<>();
+                    user1.put("name", values[1]);
+                    user1.put("category", values[2]);
+                    user1.put("phone", values[3]);
+                    List<JSONObject> userList = new ArrayList<>();
+                    userList.add(new JSONObject(user1));
+                    index.addObjectsAsync(new JSONArray(userList), null);
+                }
+            }
+        });
 
-        List<JSONObject> userList = new ArrayList<>();
-        userList.add(new JSONObject(user1));
-        index.addObjectsAsync(new JSONArray(userList), null);*/
-
-        String[] lines = response.split(System.getProperty("line.separator"));
-        for (String line : lines){
-            String[] values = line.split(",");
-            ContentValues cv = new ContentValues();
-            cv.put("name", values[1]);
-            cv.put("category", values[2]);
-            cv.put("phone", values[3]);
-            // cv.put(ProductTable.CATEGORY, values[4]); // todo clear this part.
-            db.insert(ProductTable.NAME, null, cv);
-        }
 
     }
 

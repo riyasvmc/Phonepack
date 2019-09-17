@@ -32,7 +32,7 @@ public class DetailActivity extends AppCompatActivity {
         User user = null;
         user = (User) getIntent().getSerializableExtra("user");
         if(user != null) {
-            String phone[] = user.getPhone().split(",");
+            String phone[] = user.getPhone().split(":");
             if (phone.length > 0) {
                 for (String item : phone) {
                     phoneList.add(item);
