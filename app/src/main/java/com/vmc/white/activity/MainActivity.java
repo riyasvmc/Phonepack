@@ -1,6 +1,7 @@
 package com.vmc.white.activity;
 
 import android.app.SearchManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.algolia.search.saas.AlgoliaException;
 import com.algolia.search.saas.Client;
 import com.algolia.search.saas.CompletionHandler;
 import com.algolia.search.saas.Index;
 import com.algolia.search.saas.Query;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.vmc.white.R;
 import com.vmc.white.adapter.UsersAdapter;
 import com.vmc.white.model.User;
@@ -35,6 +43,7 @@ import java.util.Map;
 
 public class MainActivity extends ActivityCustom implements SearchView.OnQueryTextListener {
     private static final String TAG = "Riyas.Vmc";
+    private static final String data_url = "https://raw.githubusercontent.com/riyasvmc/White/master/sand_box/data_white.csv?token=AB6CGCMTGUTF7PBFBHWKZPK5QDF64";
     private static final int MIN_SEARCH_CHAR = 3;
 
     // algolia
@@ -68,6 +77,52 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
         startActivity(i);
     }
 
+    private void downloadFromCloud() {
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, data_url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        uploadDataToAlgolia(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "onErrorResponse : " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    private void uploadDataToAlgolia(String response) {
+        /*Map<String, Object> user1 = new HashMap<>();
+        user1.put("name", name);
+        user1.put("category", category);
+        user1.put("phone", phone);
+
+        List<JSONObject> userList = new ArrayList<>();
+        userList.add(new JSONObject(user1));
+        index.addObjectsAsync(new JSONArray(userList), null);*/
+
+        String[] lines = response.split(System.getProperty("line.separator"));
+        for (String line : lines){
+            String[] values = line.split(",");
+            ContentValues cv = new ContentValues();
+            cv.put("name", values[1]);
+            cv.put("category", values[2]);
+            cv.put("phone", values[3]);
+            // cv.put(ProductTable.CATEGORY, values[4]); // todo clear this part.
+            db.insert(ProductTable.NAME, null, cv);
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +149,7 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
         Client client = new Client(APP_ID, API_KEY);
         index = client.getIndex("users");
 
-        // addDataToAlgoliaDB( , ,);
+        downloadFromCloud();
     }
 
     @Override
@@ -152,16 +207,5 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
             }
         });
         return true;
-    }
-
-    private void addDataToAlgoliaDB(String name, String category, String phone){
-        Map<String, Object> user1 = new HashMap<>();
-        user1.put("name", name);
-        user1.put("category", category);
-        user1.put("phone", phone);
-
-        List<JSONObject> userList = new ArrayList<>();
-        userList.add(new JSONObject(user1));
-        index.addObjectsAsync(new JSONArray(userList), null);
     }
 }
