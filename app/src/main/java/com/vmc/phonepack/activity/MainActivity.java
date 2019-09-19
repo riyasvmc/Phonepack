@@ -43,7 +43,7 @@ import java.util.Map;
 
 public class MainActivity extends ActivityCustom implements SearchView.OnQueryTextListener {
     private static final String TAG = "Riyas.Vmc";
-    private static final String data_url = "https://raw.githubusercontent.com/riyasvmc/White/master/app/src/main/res/raw/data_white.csv?token=AB6CGCOBL7QSCCBSLREMNCK5QDHGG";
+    private static final String data_url = "https://raw.githubusercontent.com/riyasvmc/Phonepack/master/app/src/main/res/raw/data_white.csv";
     private static final int MIN_SEARCH_CHAR = 2;
 
     // algolia
