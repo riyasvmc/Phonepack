@@ -1,4 +1,4 @@
-package com.vmc.white.activity;
+package com.vmc.phonepack.activity;
 
 import android.support.v7.app.AppCompatActivity;
 

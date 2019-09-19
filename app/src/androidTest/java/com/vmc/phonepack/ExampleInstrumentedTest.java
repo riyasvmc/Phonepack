@@ -1,4 +1,4 @@
-package com.vmc.white;
+package com.vmc.phonepack;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

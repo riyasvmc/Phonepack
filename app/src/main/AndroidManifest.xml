@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vmc.white">
+    package="com.vmc.phonepack">
 
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -13,14 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.DetailActivity"
-            android:parentActivityName=".activity.MainActivity"
+            android:name="com.vmc.phonepack.activity.DetailActivity"
+            android:parentActivityName="com.vmc.phonepack.activity.MainActivity"
             android:exported="true"/>
         <activity
-            android:name=".activity.ActivityNewEntry"
-            android:parentActivityName=".activity.MainActivity" />
+            android:name="com.vmc.phonepack.activity.ActivityNewEntry"
+            android:parentActivityName="com.vmc.phonepack.activity.MainActivity" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.vmc.phonepack.activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

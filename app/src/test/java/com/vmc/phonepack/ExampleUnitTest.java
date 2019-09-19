@@ -1,4 +1,4 @@
-package com.vmc.white;
+package com.vmc.phonepack;
 
 import org.junit.Test;
 

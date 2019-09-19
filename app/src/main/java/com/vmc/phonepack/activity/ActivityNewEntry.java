@@ -1,4 +1,4 @@
-package com.vmc.white.activity;
+package com.vmc.phonepack.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import com.algolia.search.saas.Client;
 import com.algolia.search.saas.Index;
-import com.vmc.white.R;
+import com.vmc.phonepack.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

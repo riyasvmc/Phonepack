@@ -1,7 +1,6 @@
-package com.vmc.white.activity;
+package com.vmc.phonepack.activity;
 
 import android.app.SearchManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,9 +28,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.vmc.white.R;
-import com.vmc.white.adapter.UsersAdapter;
-import com.vmc.white.model.User;
+import com.vmc.phonepack.R;
+import com.vmc.phonepack.adapter.UsersAdapter;
+import com.vmc.phonepack.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +44,7 @@ import java.util.Map;
 public class MainActivity extends ActivityCustom implements SearchView.OnQueryTextListener {
     private static final String TAG = "Riyas.Vmc";
     private static final String data_url = "https://raw.githubusercontent.com/riyasvmc/White/master/app/src/main/res/raw/data_white.csv?token=AB6CGCOBL7QSCCBSLREMNCK5QDHGG";
-    private static final int MIN_SEARCH_CHAR = 3;
+    private static final int MIN_SEARCH_CHAR = 2;
 
     // algolia
     public static final String APP_ID = "4EV80R6YS3";
@@ -108,6 +107,7 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
             public void requestCompleted(@Nullable JSONObject jsonObject, @Nullable AlgoliaException e) {
                 Log.d(TAG, "requestCompleted Called");
                 String[] lines = response.split(System.getProperty("line.separator"));
+                int counter = 0;
                 for (String line : lines){
                     String[] values = line.split(",");
                     Map<String, Object> user1 = new HashMap<>();
@@ -117,7 +117,9 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
                     List<JSONObject> userList = new ArrayList<>();
                     userList.add(new JSONObject(user1));
                     index.addObjectsAsync(new JSONArray(userList), null);
+                    counter++;
                 }
+                Toast.makeText(getApplicationContext(), counter + " Added.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -173,6 +175,17 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
         searchView.setOnQueryTextListener(this);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.sync) {
+            downloadFromCloud();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.vmc.white.adapter;
+package com.vmc.phonepack.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.vmc.white.R;
-import com.vmc.white.model.User;
+import com.vmc.phonepack.model.User;
 
 import java.util.List;
 

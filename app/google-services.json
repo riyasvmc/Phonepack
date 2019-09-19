@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:344063044688:android:77de4d9bb7fb7958",
         "android_client_info": {
-          "package_name": "com.vmc.white"
+          "package_name": "com.vmc.phonepack"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "344063044688-nspd52ds9qdpd7mv2213jjvbcjfhoq6o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.vmc.white",
+            "package_name": "com.vmc.phonepack",
             "certificate_hash": "decb31c7793b06cb81ebb65a20dc0a80d43ffeba"
           }
         },

@@ -1,4 +1,4 @@
-package com.vmc.white.activity;
+package com.vmc.phonepack.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -13,8 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.vmc.white.R;
-import com.vmc.white.model.User;
+import com.vmc.phonepack.R;
+import com.vmc.phonepack.model.User;
 
 import java.util.ArrayList;
 

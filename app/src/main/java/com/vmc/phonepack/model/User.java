@@ -1,7 +1,6 @@
-package com.vmc.white.model;
+package com.vmc.phonepack.model;
 
 import java.io.Serializable;
-import java.util.Locale;
 
 public class User implements Serializable {
 
