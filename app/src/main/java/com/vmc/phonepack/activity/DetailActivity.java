@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE = 1001;
+    private static Intent intent;
     private ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +47,30 @@ public class DetailActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + adapterView.getItemAtPosition(pos)));
+                intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + adapterView.getItemAtPosition(pos)));
                 if (ContextCompat.checkSelfPermission(DetailActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(DetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-
+                    ActivityCompat.requestPermissions(DetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE);
                 }
                 else
                 {
-                    startActivity(intent);
+                    dialNumber(intent);
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted
+                    dialNumber(intent);
+                }
+        }
+    }
+
+    private void dialNumber(Intent intent_call) {
+        startActivity(DetailActivity.intent);
     }
 }

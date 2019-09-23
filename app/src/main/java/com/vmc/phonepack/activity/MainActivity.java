@@ -56,6 +56,8 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
     private static ListView mListView;
     private static Index index;
 
+    public static String mQuery;
+
     // Todo collect Manjeri, Malappuram Data.
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -122,8 +124,6 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
                 Toast.makeText(getApplicationContext(), counter + " Added.", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     @Override
@@ -151,6 +151,8 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
         // Algolio
         Client client = new Client(APP_ID, API_KEY);
         index = client.getIndex("users");
+
+        queryAlgolia("");
 
         downloadFromCloud();
     }
@@ -195,31 +197,36 @@ public class MainActivity extends ActivityCustom implements SearchView.OnQueryTe
 
     @Override
     public boolean onQueryTextChange(String string) {
-        if(string.length() < MIN_SEARCH_CHAR) {
+        mQuery = string;
+        /*if(string.length() < MIN_SEARCH_CHAR) {
             mUserList.clear();
             mUserAdapter.notifyDataSetChanged();
             return false;
-        }
+        }*/
+        queryAlgolia(string);
+        return true;
+    }
+
+    private void queryAlgolia(String string) {
         Query query = new Query(string)
-            .setAttributesToRetrieve(new String[]{"name", "category", "phone"})
-            .setHitsPerPage(50);
+                .setAttributesToRetrieve(new String[]{"name", "category", "phone"})
+                .setHitsPerPage(50);
         index.searchAsync(query, new CompletionHandler() {
             @Override
             public void requestCompleted(@Nullable JSONObject jsonObject, @Nullable AlgoliaException e) {
-            try {
-                JSONArray hits = jsonObject.getJSONArray("hits");
-                mUserList.clear();
-                for (int i = 0; i < hits.length(); i++) {
-                    JSONObject jsonUser = hits.getJSONObject(i);
-                    User user = new User(jsonUser.getString("name"), jsonUser.getString("category"), jsonUser.getString("phone"));
-                    mUserList.add(user);
+                try {
+                    JSONArray hits = jsonObject.getJSONArray("hits");
+                    mUserList.clear();
+                    for (int i = 0; i < hits.length(); i++) {
+                        JSONObject jsonUser = hits.getJSONObject(i);
+                        User user = new User(jsonUser.getString("name"), jsonUser.getString("category"), jsonUser.getString("phone"));
+                        mUserList.add(user);
+                    }
+                    mUserAdapter.notifyDataSetChanged();
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
                 }
-                mUserAdapter.notifyDataSetChanged();
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
             }
         });
-        return true;
     }
 }
